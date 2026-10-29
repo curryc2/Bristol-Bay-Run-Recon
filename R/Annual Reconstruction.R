@@ -349,14 +349,14 @@ create.SYRAH.annual.input <- function(side='west', district.codes, stream.codes,
    # loc.prefix <- NULL
    # cat.esc.div=1
   ##################################
-     # side <- 'east'
-     # district.codes <- c(324,324,324,322,321)
-     # stream.codes <- c(100,500,600,100,100)
-     # stream.district <- c(1,1,1,2,3)
-     # year <- 1964
-     # outputfile <- 'test.dat'
+   #   side <- 'east'
+  #    district.codes <- c(324,324,324,322,321)
+   #   stream.codes <- c(100,500,600,100,100)
+    #  stream.district <- c(1,1,1,2,3)
+    #  year <- 2025
+    #  outputfile <- 'test.dat'
      # fixed.avail <- 16:30
-     # loc.prefix=NULL
+     #loc.prefix=NULL
      # cat.esc.div <- 1
      # read.outs <- FALSE
      # phz.run <- 1

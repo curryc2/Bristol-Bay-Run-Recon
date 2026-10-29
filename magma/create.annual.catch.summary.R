@@ -1,5 +1,6 @@
 require(PBSmodelling)
 require(reshape2)
+library(ggplot2)
 
 create.annual.catch.summary <- function(year, side, wd=wd) {
   setwd(file.path(wd, "Syrah","outputFiles"))
@@ -76,58 +77,119 @@ create.annual.catch.summary <- function(year, side, wd=wd) {
    )
    return(out)
   }
+  
+#'++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+##  1.6  reshapeWL: Reshape from wide to long  -----  
+#  idvar: column names that is used for colun
+#  timevar: new column name
+#  v.names: new variable names
+#'++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+ reshapeWL <- function(df,idvar,timevar,v.names){  
+      dfname <- names(df)[!(names(df)%in%idvar)]
+  out <- reshape(df,direction='long',idvar=idvar,varying=dfname,
+          timevar = timevar,v.names=v.names,times=dfname)
+     return(out)}  
+	 
+#'++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+##  1.7  reshapeLW: Reshape from long to wide -----  
+#  idvar: column names that is used for colun
+#  timevar: column name: that becomes wide 
+#  v.names: variable names of the wide 
+#'++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 	 
+reshapeLW <- function(df,idvar=idvar,v.names=v.names,timevar=timevar){
+  dfs <- df[,c(idvar,timevar,v.names)]
+   w <- reshape(dfs,direction='wide',timevar=timevar,v.names=v.names,idvar=idvar)
+   wname <- names(w)[-c(1:length(idvar))]
+   vhead <-paste0(v.names,'.')
+   wname <- gsub(vhead,'',wname)
+   names(w)[-c(1:length(idvar))] <- wname
+   return(w)
+}
+  
 
 test <- data.frame()
 ############## CONTROL SECTION ##############
 #Set working directory
-#wd <- "C:/Projects/Bristol_Bay/Bristol-Bay-Run-Recon-master"
-wd <- file.path("C:","Projects","Bristol_Bay","Bristol-Bay-Run-Recon")
+wd <- file.path("C:","Projects","Bristol_Bay","Bristol-Bay-Run-Reconstruction")
+setwd(file.path(wd, "magma"))
 year <- 2022
-setwd(paste(wd, "/magma", sep=""))	
-
+										
 # Read Magma by district Stock Age    
-	 magma.data <- readRDS(paste0("stock_age_",year,"_stats_dis.Rds")) 
-# Read Magma by district Stock 	 
-     magma.data2 <- readRDS(paste0("pop_",year,"_district.Rds")) 
-	 magma <- as.data.frame(do.call(rbind,magma.data))
+	 magma.data <- readRDS(paste0("stock_age_",year,"_stats_dis.Rds"))     	 
+	 magma <- data.frame(do.call(rbind,magma.data))
 # Get number of age and stock group to creadte dist and Age 
 	 ngroup <- length(unique(magma$group))
 	 nage <- length(unique(magma$age))
-	 magma$dist <- c(rep(321,ngroup*nage),rep(322,ngroup*nage),rep(324,ngroup*nage),rep(325,ngroup*nage),rep(326,ngroup*nage))
-# Convert maga age to scale age 
-	 magma$Age <- paste0(substring(magma$age,1,1),'.',substring(magma$age,2,2))
+	 magma$dist <- c(rep(321,ngroup),rep(322,ngroup),rep(324,ngroup),rep(325,ngroup),rep(326,ngroup))
+	 magma$Age <- paste0(substr(magma$age,1,1),'.',substr(magma$age,2,2))
 	 names(magma)[1] <- 'stock'
+temp <- aggregate(mean~dist+stock,sum,data=magma)
+magma <- merge(magma,temp,by=c('dist','stock'))
+magma$p.age <- with(magma,mean.x/mean.y)
+
+# Read Magma by district Stock 	){)} 
+     magma.data2 <- readRDS(paste0("pop_",year,"_district.Rds")) 	 
 	 magma2 <- as.data.frame(do.call(rbind,magma.data2))
-	 
+#	 magma2$dist <- as.numeric(substr(rownames(magma2),7,9))	 
 	 magma2$dist <- c(rep(321,ngroup),rep(322,ngroup),rep(324,ngroup),rep(325,ngroup),rep(326,ngroup))
 	 names(magma2)[1] <- 'stock'
-temp <- dcast(magma2,dist~stock, value.var='mean')
+     temp <- aggregate(mean~dist,sum,data=magma2)
+	magma2 <- merge(magma2,temp,by=c('dist'))
+	magma2$p.stock <- with(magma2,mean.x/mean.y)
+    temp <- reshapeLW(magma2,idvar=c('dist'),timevar='stock',v.names='p.stock')
+
 temp$year <- year
-test <- rbind(test,temp)
-write.csv(test, 'magma_gen.csv')
+#write.csv(temp, paste0('magma_gen_',year,'.csv'),row.names=FALSE)
+# Read RR data 
+west <- create.annual.catch.summary(year,'west',wd)
+east <- create.annual.catch.summary(year,'east',wd)
 
 
-	 
-magma <- merge(magma[,c('dist','stock','Age','mean')],magma2[,c('dist','stock','mean')],by=c('dist','stock'))
+# Combine Stock specific age comp and stock proportion
+magma <- merge(magma[,c('dist','stock','Age','p.age')],magma2[,c('dist','stock','p.stock')],by=c('dist','stock'))
 # MGpas: stock-specific age compostion at each district
 # MGps:  stock compostion at each district
 names(magma)[4:5] <- c('MGpas','MGps')
 # MGps :  Stock by age proportion
 magma$MGpsa <- with(magma,MGpas*MGps)
-# Read RR data 
-west <- create.annual.catch.summary(year,'west',wd)
-east <- create.annual.catch.summary(year,'east',wd)
+magma$TAge <- with(magma,as.numeric(substr(Age,1,1))+as.numeric(substr(Age,3,3))+1)
+ob.Catch.d <- data.frame(dist = c(324,322, 321, 325), h = c(east$Catch, west$Catch))
+# combine Catch 
+MG.Catch <- merge(magma,ob.Catch.d,by='dist')
+MG.Catch$MGas <- with(MG.Catch,MGpsa*h)
+MG.Catch.as <- aggregate(MGas~dist+stock+TAge,sum,data=MG.Catch)
 
 #RRpas: stock-specific age compostion at each district
-RR <- melt(rbind(east$RR,west$RR),id.vars = c('dist','stock'), variable.name='Age',value.name='RRpas')
+RR <- reshapeWL(rbind(east$RR,west$RR),idvar = c('dist','stock'), timevar='Age',v.nam='RRpas')
 RR.t <- merge(RR,magma,by=c('dist','stock','Age'),all=TRUE)
 RR.t[is.na(RR.t)] <- 0
-RR.catch.as <- melt(rbind(east$predCatch.a.s,west$predCatch.a.s),id.vars = c('dist','stock'), variable.name='Age',value.name='RRas')
+RR.catch.as <- reshapeWL(rbind(east$predCatch.a.s,west$predCatch.a.s),idvar = c('dist','stock'), timevar='Age',v.name='RRas')
+RR.catch.as$TAge <- with(RR.catch.as,as.numeric(substr(Age,1,1))+as.numeric(substr(Age,3,3))+1)
+RR.Catch.as <- aggregate(RRas~dist+stock+TAge,sum,data=RR.catch.as)
+# Combine Catch by district 
+Catch.as <- merge(MG.Catch.as, RR.Catch.as, by=c('dist','stock','TAge'),all=TRUE)
+Catch.as[is.na(Catch.as)] <- 0
+Catch.as$dist.name <- with(Catch.as,ifelse(dist==324,'NaknekKvichak',
+    ifelse(dist==322,'Egegik',ifelse(dist==321,'Ugashik',
+	ifelse(dist==325,'Nushagak',ifelse(dist==326,'Togiak','None'))))))
+
+#templ <- reshapeWL(Catch.as,idvar = c('dist','dist.name','stock','TAge'), timevar='Model',v.name='n' )
+#ggplot(templ, aes(x=TAge,y=n,fill=Model))+
+#geom_bar(stat='identity',position=position_dodge())+
+#labs(title = year)+
+#facet_grid(dist.name~stock,axes='all',axis.labels='margins',scale='free_y') 
+
+
+Catch.as.l <- reshapeWL(Catch.as,idvar = c('dist','dist.name','stock','TAge'), timevar='Model',v.name='n' )
+Gen.catch <- aggregate(n~stock+TAge+Model,sum,data=Catch.as.l)
+ggplot(Gen.catch, aes(x=TAge,y=n,fill=Model))+
+geom_bar(stat='identity',position=position_dodge())+
+labs(title = year)+
+facet_wrap(~stock,axes='all',axis.labels='margins',scale='free_y') 
 
 
 
-# Observed Catch by district 
-ob.Catch.d <- data.frame(dist = c(324,233, 321, 325), h = c(east$Catch, west$Catch))
+
 
 # Sum Genetic 
 # Observed
@@ -139,6 +201,7 @@ ob.Catch.gen.w <- data.frame(ob.ps=west$obsCatchGen)
 ob.Catch.gen.w$dist <- c(325)
 ob.Catch.gen.w$stock <- c('Igushik', 'Wood', 'Nushagak')
 ob.Catch.gen <- rbind(ob.Catch.gen.e,ob.Catch.gen.w[,c('dist','stock','ob.ps')])
+
 # Predicted
 pr.Catch.gen.e <- data.frame(east$predCatchGen)
 pr.Catch.gen.e$dist <- c(324,322,321)
@@ -148,6 +211,7 @@ pr.Catch.gen.w <- data.frame(pr.ps=west$predCatchGen)
 pr.Catch.gen.w$dist <- c(325)
 pr.Catch.gen.w$stock <- c('Igushik', 'Wood', 'Nushagak')
 pr.Catch.gen <- rbind(pr.Catch.gen.e,pr.Catch.gen.w[,c('dist','stock','pr.ps')])
+
 # Combine observed and predicted 
 ob.Catch.gen <- merge(ob.Catch.gen,pr.Catch.gen,by=c('dist','stock'))
 # Combine with magma genetic stock data and extract only stocks used for RR

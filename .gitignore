@@ -36,5 +36,6 @@ rsconnect/
 *.Rds
 *.pdf
 
-
+# ignore folder
+magma/
 
