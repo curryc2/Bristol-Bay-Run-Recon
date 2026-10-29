@@ -1,0 +1,221 @@
+# Number of parameters = 70 Objective function value = 1335.01618660230  Maximum gradient component = 3.07280053177133e-05
+# ln_RunSize[1]:
+-13.8155105580
+# ln_RunSize[2]:
+-13.8155105580
+# ln_RunSize[3]:
+-13.8155105580
+# ln_RunSize[4]:
+-13.8155105580
+# ln_RunSize[5]:
+-13.8155105580
+# ln_RunSize[6]:
+8.45736693516
+# ln_RunSize[7]:
+14.4214173726
+# ln_RunSize[8]:
+14.7189684648
+# ln_RunSize[9]:
+10.6536068936
+# ln_RunSize[10]:
+-13.8155105580
+# ln_RunSize[11]:
+9.33919265770
+# ln_RunSize[12]:
+14.3581193670
+# ln_RunSize[13]:
+13.8106925535
+# ln_RunSize[14]:
+-8.28378860856
+# ln_RunSize[15]:
+-13.8155105580
+# ln_RunSize[16]:
+-8.04325164990
+# ln_RunSize[17]:
+6.57662812897
+# ln_RunSize[18]:
+-13.8155105580
+# ln_RunSize[19]:
+-13.8155105580
+# ln_RunSize[20]:
+-13.8155105580
+# ln_RunSize[21]:
+-13.8155105580
+# ln_RunSize[22]:
+-13.8155105580
+# ln_RunSize[23]:
+-13.8155105580
+# ln_RunSize[24]:
+8.80210334156
+# ln_RunSize[25]:
+14.0820291005
+# ln_RunSize[26]:
+13.7324780887
+# ln_RunSize[27]:
+8.41228755778
+# ln_RunSize[28]:
+-13.8155105580
+# ln_RunSize[29]:
+7.41732193050
+# ln_RunSize[30]:
+13.3331682937
+# ln_RunSize[31]:
+11.6380522813
+# ln_RunSize[32]:
+8.59711761920
+# ln_RunSize[33]:
+-13.8155105580
+# ln_RunSize[34]:
+-8.84605478849
+# ln_RunSize[35]:
+-7.92740356939
+# ln_RunSize[36]:
+-13.8155105580
+# ln_RunSize[37]:
+-13.8155105580
+# ln_RunSize[38]:
+-13.8155105580
+# ln_RunSize[39]:
+-13.8155105580
+# ln_RunSize[40]:
+-13.8155105580
+# ln_RunSize[41]:
+-13.8155105580
+# ln_RunSize[42]:
+8.70337349470
+# ln_RunSize[43]:
+13.1320698384
+# ln_RunSize[44]:
+14.1404701802
+# ln_RunSize[45]:
+10.4559874585
+# ln_RunSize[46]:
+-13.8155105580
+# ln_RunSize[47]:
+8.85291545976
+# ln_RunSize[48]:
+12.4091853167
+# ln_RunSize[49]:
+12.9082471364
+# ln_RunSize[50]:
+-8.27939461248
+# ln_RunSize[51]:
+-13.8155105580
+# ln_RunSize[52]:
+-8.94480998312
+# ln_RunSize[53]:
+-8.05119983999
+# ln_RunSize[54]:
+-13.8155105580
+# ln_RunSize[55]:
+-13.8155105580
+# ln_RunSize[56]:
+-13.8155105580
+# ln_RunSize[57]:
+-13.8155105580
+# ln_RunSize[58]:
+-13.8155105580
+# ln_RunSize[59]:
+-13.8155105580
+# ln_RunSize[60]:
+11.2013023421
+# ln_RunSize[61]:
+15.0060090604
+# ln_RunSize[62]:
+14.0445577298
+# ln_RunSize[63]:
+8.55933310625
+# ln_RunSize[64]:
+-13.8155105580
+# ln_RunSize[65]:
+12.8790631140
+# ln_RunSize[66]:
+14.3327378976
+# ln_RunSize[67]:
+15.1252271320
+# ln_RunSize[68]:
+8.82539317349
+# ln_RunSize[69]:
+-13.8155105580
+# ln_RunSize[70]:
+8.99246830602
+# ln_RunSize[71]:
+8.15000427914
+# ln_RunSize[72]:
+-13.8155105580
+# ln_RunSize[73]:
+-13.8155105580
+# ln_RunSize[74]:
+-13.8155105580
+# ln_RunSize[75]:
+-13.8155105580
+# ln_RunSize[76]:
+-13.8155105580
+# ln_RunSize[77]:
+-13.8155105580
+# ln_RunSize[78]:
+10.8972963431
+# ln_RunSize[79]:
+15.0314987411
+# ln_RunSize[80]:
+13.9037323106
+# ln_RunSize[81]:
+8.25059296418
+# ln_RunSize[82]:
+-13.8155105580
+# ln_RunSize[83]:
+10.1813258724
+# ln_RunSize[84]:
+12.7331881918
+# ln_RunSize[85]:
+11.9709877923
+# ln_RunSize[86]:
+-11.0987752860
+# ln_RunSize[87]:
+-13.8155105580
+# ln_RunSize[88]:
+5.59746437644
+# ln_RunSize[89]:
+-8.44094112291
+# ln_RunSize[90]:
+-13.8155105580
+# Availability[1]:
+1.46655153935
+# Availability[2]:
+0.651704726888
+# Availability[3]:
+0.160389288499
+# Availability[4]:
+1.81511618072
+# Availability[5]:
+0.416484552846
+# Availability[6]:
+0.100714627276
+# Availability[7]:
+1.67541233287
+# Availability[8]:
+0.769982904335
+# Availability[9]:
+0.130426412054
+# Availability[10]:
+0.0429199462387
+# Availability[11]:
+3.10448580259
+# Availability[12]:
+0.640387327174
+# Availability[13]:
+3.85634690847e-09
+# Availability[14]:
+0.0573420138179
+# Availability[15]:
+3.96808234576
+# Selectivity[1]:
+0.000127402196181
+# Selectivity[2]:
+0.00239814291472
+# Selectivity[3]:
+0.00320555612102
+# Selectivity[4]:
+0.00346387464775
+# Selectivity[5]:
+4.99080501907
